@@ -43,22 +43,6 @@ class Graph {
 class Node {
   constructor() {
     this.id = Math.random();
-    this.x = Math.random()*width;
-    this.y = Math.random()*height;
-    this.vx = 0;
-    this.vy = 0;
-    this.ax = 0;
-    this.ay = 0;
     this.neighbors = [];
-  }
-  update(){
-    this.vx += this.ax;
-    this.vy += this.ay;
-    this.x += this.vx;
-    this.y += this.vy;
-    this.vx *= 0.96;
-    this.vy *= 0.96;
-    this.ax = 0;
-    this.ay = 0;
   }
 }

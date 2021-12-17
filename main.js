@@ -40,7 +40,7 @@ document.onmousedown = function (e) {
     }
     if (!clicks[0]) {
       clicks[0] = true;
-      const n = new Node();
+      const n = new VNode();
       clicking = n.id;
       n.x = mouse[0];
       n.y = mouse[1];
@@ -75,6 +75,28 @@ document.onmouseup = function (e) {
   }
 };
 
+class VNode extends Node {
+  constructor() {
+    super();
+    this.x = Math.random()*width;
+    this.y = Math.random()*height;
+    this.vx = 0;
+    this.vy = 0;
+    this.ax = 0;
+    this.ay = 0;
+  }
+  update(){
+    this.vx += this.ax;
+    this.vy += this.ay;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vx *= 0.96;
+    this.vy *= 0.96;
+    this.ax = 0;
+    this.ay = 0;
+  }
+}
+
 const mouse = [0, 0];
 const clicks = [false, false];
 let clicking = 0;
@@ -82,9 +104,9 @@ let clicking = 0;
 const colors = [];
 
 const graf = new Graph();
-const n1 = graf.addNode(new Node());
-const n2 = graf.addNode(new Node());
-const n3 = graf.addNode(new Node());
+const n1 = graf.addNode(new VNode());
+const n2 = graf.addNode(new VNode());
+const n3 = graf.addNode(new VNode());
 graf.addConnection(n1.id, n2.id);
 graf.addConnection(n2.id, n3.id);
 graf.addConnection(n3.id, n1.id);
