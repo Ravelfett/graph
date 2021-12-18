@@ -101,7 +101,7 @@ const mouse = [0, 0];
 const clicks = [false, false];
 let clicking = 0;
 
-const colors = [];
+const colors = [263];
 
 const graf = new Graph();
 const n1 = graf.addNode(new VNode());
@@ -115,7 +115,7 @@ graf.color();
 function animate() {
   context.clearRect(0, 0, width, height);
   context.beginPath();
-  context.fillStyle = "black";
+  context.fillStyle = "rgb(38, 6, 77)";
   context.rect(0, 0, width, height);
   context.fill();
   context.closePath();
@@ -124,8 +124,12 @@ function animate() {
   for(const i in graf.nodes){
     for(const j of graf.nodes[i].neighbors){
       if ((graf.nodes[i].x-graf.nodes[j].x)**2+(graf.nodes[i].y-graf.nodes[j].y)**2 > 800**2) {
-        graf.nodes[i].ax = (graf.nodes[j].x-graf.nodes[i].x)/4000;
-        graf.nodes[i].ay = (graf.nodes[j].y-graf.nodes[i].y)/4000;
+        graf.nodes[i].ax += (graf.nodes[j].x-graf.nodes[i].x)/4000;
+        graf.nodes[i].ay += (graf.nodes[j].y-graf.nodes[i].y)/4000;
+      }
+      if ((graf.nodes[i].x-graf.nodes[j].x)**2+(graf.nodes[i].y-graf.nodes[j].y)**2 < 300**2) {
+        graf.nodes[i].ax += (graf.nodes[i].x-graf.nodes[j].x)/4000;
+        graf.nodes[i].ay += (graf.nodes[i].y-graf.nodes[j].y)/4000;
       }
     }
   }
@@ -162,7 +166,18 @@ function animate() {
     context.beginPath();
     if (i in graf.colors) {
       if (colors.length<=graf.colors[i]) {
-        colors.push(Math.random()*255);
+        interval = 130;
+        let col = 0;
+        let closest = 0;
+        do {
+          col = Math.floor(Math.random()*255);
+          closest = colors.reduce(function(prev, curr) {
+            return (Math.abs(curr - col) < Math.abs(prev - col) ? curr : prev);
+          });
+          interval /=1.01
+          console.log(closest, col);
+        } while (Math.abs(closest-col)<interval)
+        colors.push(col);
       }
       context.fillStyle = 'hsl('+ colors[graf.colors[i]] +',100%,50%)';
     }else{
